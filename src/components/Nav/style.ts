@@ -21,8 +21,11 @@ export const StyledLink = styled(NavLink)`
   font-size: 14px;
   text-decoration: none;
   color: black;
-  :active {
+  &:hover {
     color: #fff;
-    background-color: #000;
+    background-color: #999;
+  }
+  &.active {
+    text-decoration: underline;
   }
 `

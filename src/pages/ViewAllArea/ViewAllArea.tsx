@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import * as S from './style'
-import Card from './../../components/Card/Card'
+import Card from '../../components/Card/Card'
+import { createLanguageService } from 'typescript'
+import CardContainer from './../../components/CardContainer/CardContainer'
+import { useAppDispatch } from '../../store/store'
+import { bookmarkActions } from '../../store/slices/bookmarkSlice'
 
 const allCities = [
   '서울',
@@ -23,8 +27,11 @@ const allCities = [
   '세종',
 ]
 function ViewAllArea() {
-  const [city, setCity] = useState('서울')
-  const [datas, setDatas] = useState([])
+  const [city, setCity] = useState('인천')
+  const [datas, setDatas] = useState<any>([])
+  const allItems = useRef<any>('')
+  const dispatch = useAppDispatch()
+  const [backgroundColor, setBackgroundColor] = useState('')
   const changeOptionHandler = (e: React.FormEvent<HTMLOptionElement>) => {
     const { value } = e.currentTarget
     console.log(value)
@@ -46,7 +53,10 @@ function ViewAllArea() {
         params: queryParams,
       })
       const { items } = res.data.response.body
-      setDatas(items)
+      console.log(items)
+      const { stationName } = res.data.response.body.items
+      
+      allItems.current = items
     } catch (error) {
       console.log(error)
     } finally {
@@ -54,33 +64,29 @@ function ViewAllArea() {
     }
   }
   useEffect(() => {
+    allItems.current = []
     getDust()
-  }, [city])
+  }, [])
+  useEffect(() => {}, [allItems.current])
 
+  console.log(allItems)
   return (
-    // 불러온 값 map 돌려서 Card 컴포넌트 불러오기
-    <S.Container>
-      {isLoading && <p>Loading...</p>}
-      <S.SelectsContainer>
-        <S.Select name="city">
-          {allCities.map((city, index) => (
-            <option onChange={changeOptionHandler} key={index} value={city}>
-              {city}
-            </option>
-          ))}
-        </S.Select>
-      </S.SelectsContainer>
-      <div>
-      
-          {/* <Card
-            key={index}
-            dataTime={data.dataTime}
-            pmValue={data.pm10Value}
-            pmGrade={data.pm10Grade}
-          /> */}
+    <>
+      <S.Container>
+        {isLoading && <p>Loading...</p>}
+        <S.SelectsContainer>
+          <S.Select name="city">
+            {allCities.map((city, index) => (
+              <option onChange={changeOptionHandler} key={index} value={city}>
+                {city}
+              </option>
+            ))}
+          </S.Select>
+        </S.SelectsContainer>
 
-      </div>
-    </S.Container>
+        <CardContainer datas={allItems.current} />
+      </S.Container>
+    </>
   )
 }
 
