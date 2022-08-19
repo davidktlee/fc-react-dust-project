@@ -15,22 +15,20 @@ interface PropsType {
   clickState?: boolean
 }
 
-function Card({ pm10Grade, sidoName, stationName, dataTime, clickState, pm10Value }: PropsType) {
+function Card({ pm10Grade, sidoName, stationName, dataTime,  pm10Value }: PropsType) {
   const [clickStateBool, setClickStateBool] = useState(false)
   const dispatch = useAppDispatch()
-  if (clickState) {
-    setClickStateBool(true)
-  }
+  
   const onClickStar = (stationName: string) => {
     // click하면 dispatch 보내서 위치 저장
-    if (!clickState) {
+    if (!clickStateBool) {
       dispatch(
         bookmarkActions.likedArea({
           payload: { stationName, sidoName, pm10Grade, dataTime, pm10Value },
         })
       )
       setClickStateBool(true)
-    } else if (clickState) {
+    } else if (clickStateBool) {
       dispatch(
         bookmarkActions.unLikedArea({
           payload: stationName,

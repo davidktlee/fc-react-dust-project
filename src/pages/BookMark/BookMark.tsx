@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useBookmarkSelector } from './../../store/store'
 
 import { bookmarkActions } from '../../store/slices/bookmarkSlice'
@@ -6,14 +6,15 @@ import BookmarkCard from './../../components/Card/BookmarkCard/BookmarkCard'
 import * as S from './style'
 
 function BookMark() {
-  const selector = useBookmarkSelector((state: any) => state.liked)
+  const [selector, setSelector] = useState(useBookmarkSelector((state: any) => state.liked))
   const dispatch = useAppDispatch()
   const [clickStateBool, setClickStateBool] = useState(false)
 
   const onClickStar = (stationName: string) => {
-    dispatch(bookmarkActions.unLikedArea({ payload: stationName }))
+    setSelector(selector.filter((item: any) => item.payload.stationName !== stationName))
+    dispatch(bookmarkActions.unLikedArea({ payload: selector }))
   }
-  console.log(selector)
+
   return (
     <>
       <S.h1>즐겨찾기</S.h1>
@@ -27,6 +28,7 @@ function BookMark() {
             pm10Value={data.payload.pm10Value}
             dataTime={data.payload.dataTime}
             onClickStar={onClickStar}
+            clickStateBool={clickStateBool}
           />
         ))}
     </>

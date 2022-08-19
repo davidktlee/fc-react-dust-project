@@ -27,14 +27,13 @@ const allCities = [
   '세종',
 ]
 function ViewAllArea() {
-  const [city, setCity] = useState('인천')
+  const [city, setCity] = useState('서울')
   const [datas, setDatas] = useState<any>([])
   const allItems = useRef<any>('')
   const dispatch = useAppDispatch()
   const [backgroundColor, setBackgroundColor] = useState('')
-  const changeOptionHandler = (e: React.FormEvent<HTMLOptionElement>) => {
+  const changeOptionHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.currentTarget
-    console.log(value)
     setCity(value)
   }
   const queryParams = {
@@ -55,7 +54,7 @@ function ViewAllArea() {
       const { items } = res.data.response.body
       console.log(items)
       const { stationName } = res.data.response.body.items
-      
+
       allItems.current = items
     } catch (error) {
       console.log(error)
@@ -67,7 +66,9 @@ function ViewAllArea() {
     allItems.current = []
     getDust()
   }, [])
-  useEffect(() => {}, [allItems.current])
+  useEffect(() => {
+    getDust()
+  }, [city])
 
   console.log(allItems)
   return (
@@ -75,9 +76,9 @@ function ViewAllArea() {
       <S.Container>
         {isLoading && <p>Loading...</p>}
         <S.SelectsContainer>
-          <S.Select name="city">
+          <S.Select name="city" onChange={changeOptionHandler}>
             {allCities.map((city, index) => (
-              <option onChange={changeOptionHandler} key={index} value={city}>
+              <option key={index} value={city}>
                 {city}
               </option>
             ))}

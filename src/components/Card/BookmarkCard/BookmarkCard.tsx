@@ -1,6 +1,6 @@
 import React from 'react'
 import * as S from './style'
-import { AiFillStar } from 'react-icons/ai'
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 
 interface PropsType {
   stationName: string
@@ -9,6 +9,7 @@ interface PropsType {
   pm10Value: string
   dataTime: string
   onClickStar: Function
+  clickStateBool: boolean
 }
 
 function BookmarkCard({
@@ -18,6 +19,7 @@ function BookmarkCard({
   pm10Value,
   dataTime,
   onClickStar,
+  clickStateBool,
 }: PropsType) {
   return (
     <div>
@@ -25,11 +27,11 @@ function BookmarkCard({
         <S.ItemContainer>
           <S.ItemGu>{stationName}</S.ItemGu>
           <S.ItemCity>{sidoName}</S.ItemCity>
-          {/* {!clickStateBool ? (
-        <S.ItemBookMark onClick={() => onClickStar(stationName)}>
-          <AiOutlineStar />
-        </S.ItemBookMark>
-      ) : ( */}
+          {/* {clickStateBool ? (
+            <S.ItemBookMark onClick={() => onClickStar(stationName)}>
+              <AiOutlineStar />
+            </S.ItemBookMark>
+          ) : ( */}
           <S.ItemBookMark onClick={() => onClickStar(stationName)}>
             <AiFillStar />
           </S.ItemBookMark>
