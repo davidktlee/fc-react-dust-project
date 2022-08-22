@@ -4,9 +4,10 @@ import * as S from './style'
 
 interface PropsType {
   datas: []
+  city?: string
 }
 
-function CardContainer({ datas }: PropsType) {
+function CardContainer({ datas, city }: PropsType) {
   return (
     <S.Container>
       {datas &&
@@ -17,11 +18,11 @@ function CardContainer({ datas }: PropsType) {
             pm10Value={data.pm10Value}
             dataTime={data.dataTime}
             stationName={data.stationName}
-            sidoName={data.sidoName}
+            sidoName={city}
           />
         ))}
     </S.Container>
   )
 }
 
-export default CardContainer
+export default React.memo(CardContainer)

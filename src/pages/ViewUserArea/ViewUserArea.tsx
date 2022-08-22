@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from './../../components/Card/Card'
 import * as S from './style'
 import CardContainer from './../../components/CardContainer/CardContainer'
@@ -38,7 +38,6 @@ function ViewUserArea() {
     setSelectedGuName(e.currentTarget.value)
   }
   const getUserArea = async () => {
-    console.log(city)
     const queryParams = {
       serviceKey:
         'i6NBYvSPoHeMW79uztyefBELCckuvljpWPNb8uIpR7CMbXatMgAL++hdd4Tn8YCPNF7iEoY3T2ErVa6GVaMPpQ==',
@@ -52,7 +51,6 @@ function ViewUserArea() {
       const res = await axios.get('B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty', {
         params: queryParams,
       })
-      console.log(res.data)
       const { items } = res.data.response.body
       setGuNames(items.map((item: any) => item.stationName))
     } catch (error) {
@@ -62,7 +60,6 @@ function ViewUserArea() {
     }
   }
   const getSpecificArea = async () => {
-    console.log(selectedGuName)
     const queryParams = {
       serviceKey:
         'i6NBYvSPoHeMW79uztyefBELCckuvljpWPNb8uIpR7CMbXatMgAL++hdd4Tn8YCPNF7iEoY3T2ErVa6GVaMPpQ==',
@@ -74,7 +71,6 @@ function ViewUserArea() {
       const res = await axios.get('B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty', {
         params: queryParams,
       })
-      console.log(res.data)
       const { items } = res.data.response.body
       setItems(items[0])
     } catch (error) {}

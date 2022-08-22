@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import * as S from './style'
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 
@@ -21,9 +21,21 @@ function BookmarkCard({
   onClickStar,
   clickStateBool,
 }: PropsType) {
+  const [color, setColor] = useState('')
+  useEffect(() => {
+    if (pm10Grade === '1') {
+      setColor('#32cd32')
+    } else if (pm10Grade === '2') {
+      setColor('#6b8e23')
+    } else if (pm10Grade === '3') {
+      setColor('#F7E600')
+    } else if (pm10Grade === '4') {
+      setColor('#ff4500')
+    }
+  }, [])
   return (
-    <div>
-      <S.Container className={pm10Grade}>
+    <>
+      <S.Container className={color}>
         <S.ItemContainer>
           <S.ItemGu>{stationName}</S.ItemGu>
           <S.ItemCity>{sidoName}</S.ItemCity>
@@ -43,7 +55,7 @@ function BookmarkCard({
           <div>{dataTime}</div>
         </>
       </S.Container>
-    </div>
+    </>
   )
 }
 

@@ -7,19 +7,7 @@ export const Container = styled.div`
   border-radius: 10px;
   width: 300px;
   height: 150px;
-  background-color: #999;
-  &.1 {
-    background-color: 'green';
-  }
-  &.2 {
-    background-color: 'green';
-  }
-  &.3 {
-    background-color: 'red';
-  }
-  &.4 {
-    background-color: 'red';
-  }
+  background-color: ${(props) => props.className || 'gray'};
 `
 export const ItemContainer = styled.div`
   display: flex;

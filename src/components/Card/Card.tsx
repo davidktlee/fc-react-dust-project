@@ -8,17 +8,18 @@ interface PropsType {
   // dataTime: string
 
   stationName: string
-  sidoName: string
+  sidoName: string | undefined
   pm10Grade: string
   pm10Value: string
   dataTime: string
   clickState?: boolean
 }
 
-function Card({ pm10Grade, sidoName, stationName, dataTime,  pm10Value }: PropsType) {
+function Card({ pm10Grade, sidoName, stationName, dataTime, pm10Value }: PropsType) {
   const [clickStateBool, setClickStateBool] = useState(false)
   const dispatch = useAppDispatch()
-  
+  const [color, setColor] = useState('')
+  const [text, setText] = useState('')
   const onClickStar = (stationName: string) => {
     // click하면 dispatch 보내서 위치 저장
     if (!clickStateBool) {
@@ -37,10 +38,25 @@ function Card({ pm10Grade, sidoName, stationName, dataTime,  pm10Value }: PropsT
       setClickStateBool(false)
     }
   }
+  useEffect(() => {
+    if (pm10Grade === '1') {
+      setColor('#32cd32')
+      setText('좋음')
+    } else if (pm10Grade === '2') {
+      setColor('#6b8e23')
+      setText('조금 좋음')
+    } else if (pm10Grade === '3') {
+      setColor('#F7E600')
+      setText('보통')
+    } else if (pm10Grade === '4') {
+      setColor('#ff4500')
+      setText('나쁨')
+    }
+  }, [])
 
   return (
     <>
-      <S.Container className={pm10Grade}>
+      <S.Container className={color}>
         <S.ItemContainer>
           <S.ItemGu>{stationName}</S.ItemGu>
           <S.ItemCity>{sidoName}</S.ItemCity>
@@ -54,15 +70,15 @@ function Card({ pm10Grade, sidoName, stationName, dataTime,  pm10Value }: PropsT
             </S.ItemBookMark>
           )}
         </S.ItemContainer>
-        <>
-          <div>{pm10Grade ? pm10Grade : '정보 없음'}</div>
-          <div>{pm10Value}</div>
-          <div>{dataTime}</div>
-        </>
+        <S.ResultArea>
+          <S.ResultText>{text || '정보 없음'}</S.ResultText>
+          <div>미세먼지 수치: {pm10Value}</div>
+          <S.ResultTime>{dataTime}</S.ResultTime>
+        </S.ResultArea>
       </S.Container>
     </>
   )
 }
 
-export default Card
+export default React.memo(Card)
 /*    */

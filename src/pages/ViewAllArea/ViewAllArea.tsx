@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import axios from 'axios'
 import * as S from './style'
 import Card from '../../components/Card/Card'
@@ -7,27 +7,27 @@ import CardContainer from './../../components/CardContainer/CardContainer'
 import { useAppDispatch } from '../../store/store'
 import { bookmarkActions } from '../../store/slices/bookmarkSlice'
 
-const allCities = [
-  '서울',
-  '경기',
-  '부산',
-  '대구',
-  '인천',
-  '광주',
-  '대전',
-  '울산',
-  '강원',
-  '충북',
-  '충남',
-  '전북',
-  '전남',
-  '경북',
-  '경남',
-  '제주',
-  '세종',
-]
 function ViewAllArea() {
-  const [city, setCity] = useState('서울')
+  const [cities, setCities] = useState<any>([
+    '서울',
+    '경기',
+    '부산',
+    '대구',
+    '인천',
+    '광주',
+    '대전',
+    '울산',
+    '강원',
+    '충북',
+    '충남',
+    '전북',
+    '전남',
+    '경북',
+    '경남',
+    '제주',
+    '세종',
+  ])
+  const [city, setCity] = useState('')
   const [datas, setDatas] = useState<any>([])
   const allItems = useRef<any>('')
   const dispatch = useAppDispatch()
@@ -45,15 +45,14 @@ function ViewAllArea() {
     sidoName: city,
   }
   const [isLoading, setIsLoading] = useState(false)
-  const getDust = async () => {
+  const getDust = useMemo(async () => {
     setIsLoading(true)
+    allItems.current = []
     try {
       const res = await axios.get('B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty', {
         params: queryParams,
       })
       const { items } = res.data.response.body
-      console.log(items)
-      const { stationName } = res.data.response.body.items
 
       allItems.current = items
     } catch (error) {
@@ -61,37 +60,34 @@ function ViewAllArea() {
     } finally {
       setIsLoading(false)
     }
-  }
-  useEffect(() => {
-    allItems.current = []
-    getDust()
-  }, [])
-  useEffect(() => {
-    getDust()
   }, [city])
+  // useEffect(() => {
+  //   getDust()
+  // }, [])
+  /* useEffect(() => {
+    getDust()
+  }, [city]) */
 
-  console.log(allItems)
   return (
     <>
       <S.Container>
         {isLoading && <p>Loading...</p>}
         <S.SelectsContainer>
           <S.Select name="city" onChange={changeOptionHandler}>
-            {allCities.map((city, index) => (
+            {cities.map((city: any, index: number) => (
               <option key={index} value={city}>
                 {city}
               </option>
             ))}
           </S.Select>
         </S.SelectsContainer>
-
-        <CardContainer datas={allItems.current} />
+        <CardContainer datas={allItems.current} city={city} />
       </S.Container>
     </>
   )
 }
 
-export default ViewAllArea
+export default React.memo(ViewAllArea)
 
 /*    <S.SelectsContainer>
         <S.Select name="guName">

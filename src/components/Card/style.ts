@@ -7,19 +7,7 @@ export const Container = styled.div`
   border-radius: 10px;
   width: 300px;
   height: 150px;
-  background-color: #999;
-  &.1 {
-    background-color: 'green';
-  }
-  &.2 {
-    background-color: 'green';
-  }
-  &.3 {
-    background-color: 'red';
-  }
-  &.4 {
-    background-color: 'red';
-  }
+  background-color: ${(props) => props.className || 'gray'};
 `
 export const ItemContainer = styled.div`
   display: flex;
@@ -41,7 +29,20 @@ export const ItemBookMark = styled.span`
   cursor: pointer;
 `
 
-export const resultArea = styled.div`
+export const ResultArea = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`
+export const ResultText = styled.div`
+  width: 100px;
+  height: 20px;
+  text-align: center;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 12px 0;
+  font-size: 20px;
+`
+export const ResultTime = styled.div`
+  font-size: 14px;
 `
