@@ -18,7 +18,7 @@ function BookMark() {
   return (
     <>
       <S.Container>
-        <S.h1>즐겨찾기</S.h1> 
+        <S.h1>즐겨찾기</S.h1>
         {selector &&
           selector.flatMap((data: any, index: number) => (
             <BookmarkCard

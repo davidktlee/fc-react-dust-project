@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as S from './style'
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai'
-import { useAppDispatch } from '../../store/store'
+import { useAppDispatch, useBookmarkSelector } from '../../store/store'
 import { bookmarkActions } from '../../store/slices/bookmarkSlice'
+import { useSelector } from 'react-redux'
 
 interface PropsType {
   // dataTime: string
@@ -17,6 +18,7 @@ interface PropsType {
 
 function Card({ pm10Grade, sidoName, stationName, dataTime, pm10Value }: PropsType) {
   const [clickStateBool, setClickStateBool] = useState(false)
+  const [selector, setSelector] = useState(useBookmarkSelector((state: any) => state.liked))
   const dispatch = useAppDispatch()
   const [color, setColor] = useState('')
   const [text, setText] = useState('')
@@ -30,11 +32,8 @@ function Card({ pm10Grade, sidoName, stationName, dataTime, pm10Value }: PropsTy
       )
       setClickStateBool(true)
     } else if (clickStateBool) {
-      dispatch(
-        bookmarkActions.unLikedArea({
-          payload: stationName,
-        })
-      )
+      setSelector(selector.filter((item: any) => item.payload.stationName !== stationName))
+      dispatch(bookmarkActions.unLikedArea({ payload: selector }))
       setClickStateBool(false)
     }
   }

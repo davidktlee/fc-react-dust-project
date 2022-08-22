@@ -15,7 +15,7 @@ const bookmarkSlice = createSlice({
       state.liked = [...state.liked, action.payload]
     },
     unLikedArea(state, action) {
-      state.liked = [action.payload]
+      state.liked = [action]
     },
   },
 })
